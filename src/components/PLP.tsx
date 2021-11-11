@@ -5,7 +5,7 @@ import Product from './Product';
 import styled from 'styled-components';
 import { ProductType } from '../model/models';
 import { useSelector } from 'react-redux';
-import { selectSearchFilter, selectStockFilter } from '../store/selectors';
+import { RootState } from '../app/store';
 
 const ExtGridDiv = styled.div`
     min-height: 100vh;
@@ -27,8 +27,8 @@ const ProdGridDiv = styled.div`
 const ProductList: React.FC = () => {
     const [products, setProducts] = React.useState<ProductType[]>([]);
 
-    const selected = useSelector(selectStockFilter);
-    const searchTerm = useSelector(selectSearchFilter);
+    const selected = useSelector((state: RootState) => state.selectedFilter.selectedFilter);
+    const searchTerm = useSelector((state: RootState) => state.searchFilter.searchFilter);
 
     React.useEffect(() => {
         fetch(

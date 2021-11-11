@@ -2,8 +2,9 @@ import React, { useState, useLayoutEffect } from "react";
 import styled from 'styled-components';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectStockFilter, selectSearchFilter } from '../store/selectors';
-import { setStockFilter, setSearchFilter } from  '../store/actions';
+import { RootState } from '../app/store';
+import { setSearchFilter } from '../app/features/searchSlice';
+import { setSelectedFilter } from '../app/features/selectedSlice';
 
 const SearchBarWrapper = styled.div`
     position: relative;
@@ -173,7 +174,7 @@ Ripple.propTypes = {
 };
 
 const SearchBox: React.FC = () => {
-  const searchTerm = useSelector(selectSearchFilter);
+  const searchTerm = useSelector((state: RootState) => state.searchFilter.searchFilter);
   const dispatch = useDispatch();
 
   const ResetButtonWrapper: React.FC = () => {
@@ -250,7 +251,7 @@ const ToggleButtonsWrapper = styled.div`
 `;
 
 const ToggleButtons: React.FC = () => {
-  const selected = useSelector(selectStockFilter);
+  const selected = useSelector((state: RootState) => state.selectedFilter.selectedFilter);
   const dispatch = useDispatch();
   
   return (
@@ -258,14 +259,14 @@ const ToggleButtons: React.FC = () => {
     <ToggleButton className={selected==="in" ? "in active" : "in"}
       onClick={() => 
         selected === "in"
-        ? dispatch(setStockFilter("none"))
-        : dispatch(setStockFilter("in"))}
+        ? dispatch(setSelectedFilter("none"))
+        : dispatch(setSelectedFilter("in"))}
     >IN STOCK<Ripple/></ToggleButton>
     <ToggleButton className={selected==="out" ? "out active" : "out"}
       onClick={() => 
         selected === "out"
-        ? dispatch(setStockFilter("none"))
-        : dispatch(setStockFilter("out"))}
+        ? dispatch(setSelectedFilter("none"))
+        : dispatch(setSelectedFilter("out"))}
     >OUT OF STOCK<Ripple/></ToggleButton>
   </ToggleButtonsWrapper>
 )};
