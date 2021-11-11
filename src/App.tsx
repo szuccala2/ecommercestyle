@@ -1,6 +1,6 @@
 import './App.css';
-import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
+import PLP from './components/PLP';
 import {
   Switch,
   Route
@@ -10,7 +10,7 @@ function App() {
   return (
     <Switch>
       <Route path="/prod/:id" component={ProductDetails} />
-      <Route exact path="/" component={ProductList} />
+      <Route exact path="/" component={PLP} />
     </Switch>
   );
 }
