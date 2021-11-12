@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ProductType } from '../model/models';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
+import { useProducts } from './Functions';
 
 const ExtGridDiv = styled.div`
     min-height: 100vh;
@@ -25,18 +26,9 @@ const ProdGridDiv = styled.div`
 `;
 
 const ProductList: React.FC = () => {
-    const [products, setProducts] = React.useState<ProductType[]>([]);
-
     const selected = useSelector((state: RootState) => state.selectedFilter.selectedFilter);
     const searchTerm = useSelector((state: RootState) => state.searchFilter.searchFilter);
-
-    React.useEffect(() => {
-        fetch(
-          "https://assets.fc-dev.instore.oakley.com/assets/products/products.json"
-        )
-          .then((res) => res.json())
-          .then((products) => setProducts(products));
-    }, []);
+    const products = useProducts();
 
     return (
         <ExtGridDiv>
@@ -44,7 +36,7 @@ const ProductList: React.FC = () => {
             <ContainerGrid>
                 <ProdGridDiv>
                     {products && products
-                    .filter((prod)=>{
+                    .filter((prod: ProductType)=>{
                         switch(selected) {
                         case "in":
                             return prod.availability.stock>0;
@@ -54,8 +46,8 @@ const ProductList: React.FC = () => {
                             return true;
                         }
                     })
-                    .filter((prod)=>{return prod.name.toLowerCase().includes(searchTerm.toLowerCase())})
-                    .map((prod,_) => (
+                    .filter((prod: ProductType)=>{return prod.name.toLowerCase().includes(searchTerm.toLowerCase())})
+                    .map((prod: ProductType, _: number) => (
                         <Product prod={prod} det={false} key={prod.UPC} />
                     ))}
                 </ProdGridDiv>
