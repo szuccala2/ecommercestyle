@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import { ProductDetailsCard } from './Product';
 import { useParams } from "react-router-dom";
 import { ProductType } from '../model/models';
 import styled from 'styled-components';
@@ -35,6 +34,60 @@ const VariantImage = styled.img`
     width: 200px;
     height: 100px;
 `;
+
+const ProdDetGrid = styled.div`
+    display: grid;
+    grid-template-areas: 
+        'title title title title title'
+        'img   det   det   det   det  ';
+    width: 80%;
+    margin-top: -35px;
+`;
+
+const VariantTitle: React.FC<{title: string}> = ({title}) => {
+    return (
+        <h1 style={{gridArea: 'title'}}>{title}</h1>
+    );
+}
+
+const DetImage = styled.img`
+    grid-area: 'img';
+`;
+
+const DetElement = styled.h1`
+    font-size: 18px;
+    color: gray;
+    display: flexbox;
+
+    & > span {
+        font-weight: bold;
+        color: black;
+    }
+`;
+
+const ProdDet: React.FC<{product: ProductType | Omit<ProductType, "variants"> | undefined}> = ({ product }) => {
+    return (
+        <div>
+            <DetElement>Name: <span>{product ? product.name : ""}</span></DetElement>
+            <DetElement>Price: <span>{product ? product.price.current.value : ""}$</span></DetElement>
+            <DetElement>Stock: <span>{product ? product.availability.stock : ""}</span></DetElement>
+            <DetElement>UPC: <span>{product ? product.UPC : ""}</span></DetElement>
+        </div>
+    );
+}
+
+export const ProductDetailsCard:
+    React.FC<{product: ProductType | Omit<ProductType, "variants"> | undefined}> = ({ product }) => {
+    return (
+        <div>
+            <ProdDetGrid>
+                <VariantTitle title={product ? product.name : ""} />
+                <DetImage alt={ `img${product?.UPC}` } src={`https://picsum.photos/800/400?random=${product?.UPC}`} />
+                <ProdDet product={product} />
+            </ProdDetGrid>
+        </div>
+    );
+}
 
 const ProductDetails: React.FC = () => {
     const { id } = useParams<{ id : string }>();
