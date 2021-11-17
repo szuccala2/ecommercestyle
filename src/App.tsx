@@ -22,20 +22,14 @@ const App : React.FC = () => {
       const prods = products.map((prod : Omit<ProductType, "img">) => {
         const vars = prod.variants.map((va : Omit<ProductType, "variants">) => {
           return {
-            UPC: va.UPC,
-            name: va.name,
-            price: va.price,
-            availability: va.availability,
-            img: `https://picsum.photos/800/400?random=${va.UPC}`
+            ...va,
+            img: `https://picsum.photos/600/400?random=${va.UPC}`
           }
         });
 
         return {
-          UPC: prod.UPC,
-          name: prod.name,
-          price: prod.price,
-          availability: prod.availability,
-          img: `https://picsum.photos/800/400?random=${prod.UPC}`,
+          ...prod,
+          img: `https://picsum.photos/600/400?random=${prod.UPC}`,
           variants: vars
         };
       })

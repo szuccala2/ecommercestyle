@@ -28,6 +28,14 @@ const VariantGridDiv = styled.div`
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     row-gap: 15px;
+    margin-bottom: 15vh;
+
+    @media only screen and (max-width: 550px) {
+        width: 90vw;
+        background-color: #333;
+        overflow: auto;
+        white-space: nowrap;
+    }
 `;
 
 const VariantImage = styled.img`
@@ -38,11 +46,20 @@ const VariantImage = styled.img`
 
 const ProdDetGrid = styled.div`
     display: grid;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas: 
-        'title title title title title'
-        'img   det   det   det   det  ';
-    width: 80%;
+        'title title'
+        'img   det  ';
+    width: 70%;
     margin-top: -35px;
+
+    @media only screen and (max-width: 550px) {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        'title'
+        'img'
+        'det';
+    }
 `;
 
 const VariantTitle: React.FC<{title: string}> = ({title}) => {
@@ -53,6 +70,10 @@ const VariantTitle: React.FC<{title: string}> = ({title}) => {
 
 const DetImage = styled.img`
     grid-area: 'img';
+
+    @media only screen and (max-width: 550px) {
+        width: 90vw;
+    }
 `;
 
 const DetElement = styled.h1`

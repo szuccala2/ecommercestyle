@@ -106,8 +106,7 @@ const ProductList: React.FC = () => {
             <Header />
             <ContainerGrid>
                 <ProdGridDiv>
-                    {products && products
-                    .filter((product: ProductType)=>{
+                    {products?.filter((product: ProductType)=>{
                         switch(selected) {
                         case "in":
                             return product.availability.stock>0;

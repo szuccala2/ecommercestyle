@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, MouseEvent } from "react";
 import styled from 'styled-components';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
@@ -81,7 +81,7 @@ const ResetButton = styled.button `
     }
 `;
 
-const RippleContainer = styled.div<any>`
+const RippleContainer = styled.div<{color: string, duration: number}>`
   position: absolute;
   top: 0;
   right: 0;
@@ -124,13 +124,13 @@ const useDebouncedRippleCleanUp = (rippleCount: number, duration: number, cleanU
 };
 
 const Ripple = ({ duration = 850, color = "#fff" }) => {
-  const [rippleArray, setRippleArray] = useState<any>([]);
+  const [rippleArray, setRippleArray] = useState<{x: number, y:number, size: number}[]>([]);
 
   useDebouncedRippleCleanUp(rippleArray.length, duration, () => {
     setRippleArray([]);
   });
 
-  const addRipple = (event:any) => {
+  const addRipple = (event: MouseEvent) => {
     const rippleContainer = event.currentTarget.getBoundingClientRect();
     const size =
       rippleContainer.width > rippleContainer.height
@@ -150,7 +150,7 @@ const Ripple = ({ duration = 850, color = "#fff" }) => {
   return (
     <RippleContainer duration={duration} color={color} onMouseDown={addRipple}>
       {rippleArray.length > 0 &&
-        rippleArray.map((ripple:any, index: number) => {
+        rippleArray.map((ripple, index) => {
           return (
             <span
               key={"span" + index}
