@@ -10,6 +10,7 @@ export type ProductType = {
     availability: {
         stock: number;
     };
+    img: string;
     variants: Omit<ProductType, "variants">[];
 }
 
@@ -17,5 +18,6 @@ export type stockFilter = "none" | "in" | "out";
 
 export type stateModel = {
     searchFilter: string,
-    selectedFilter: stockFilter
+    selectedFilter: stockFilter,
+    products: ProductType[]
 };

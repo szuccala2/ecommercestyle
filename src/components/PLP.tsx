@@ -4,8 +4,7 @@ import Footer from './Footer';
 import styled from 'styled-components';
 import { ProductType } from '../model/models';
 import { useSelector } from 'react-redux';
-import { useProducts } from './Functions';
-import { selectedFilterSelector, searchFilterSelector } from '../store/selectors';
+import { selectedFilterSelector, searchFilterSelector, productsSelector } from '../store/selectors';
 import { useHistory } from 'react-router-dom';
 
 const ExtGridDiv = styled.div`
@@ -87,7 +86,7 @@ const ProductCard: React.FC<{product: ProductType}> = ({ product }) => {
     var history = useHistory();
     return (
         <Card onClick={()=>{history.push(`/prod/${product.UPC}`)}}>
-            <Image src="https://via.placeholder.com/350" alt="prodImg" />
+            <Image src={product.img} alt={`prodImg${product.UPC}`} />
             <CardDes>
                 <Text className="name">{product.name}</Text>
                 <Text className="price">{product.price.current.value}$</Text>
@@ -100,7 +99,7 @@ const ProductCard: React.FC<{product: ProductType}> = ({ product }) => {
 const ProductList: React.FC = () => {
     const selected = useSelector(selectedFilterSelector);
     const searchTerm = useSelector(searchFilterSelector);
-    const products = useProducts();
+    const products = useSelector(productsSelector);
 
     return (
         <ExtGridDiv>

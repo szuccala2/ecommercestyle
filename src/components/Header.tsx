@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect } from "react";
 import styled from 'styled-components';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
-import { filterSliceActions } from '../store/actions';
+import { productsActions } from '../store/actions';
 import { searchFilterSelector, selectedFilterSelector } from "../store/selectors";
 
 const SearchBarWrapper = styled.div`
@@ -107,19 +107,19 @@ const RippleContainer = styled.div<any>`
   }
 `;
 
-const useDebouncedRippleCleanUp = (rippleCount: number, duration: number, cleanUpFunction:any) => {
+const useDebouncedRippleCleanUp = (rippleCount: number, duration: number, cleanUpFunction:()=>void) => {
   useLayoutEffect(() => {
-    let bounce: any = null;
+    let bounce: null | NodeJS.Timeout = null;
     if (rippleCount > 0) {
-      clearTimeout(bounce);
+      bounce && clearTimeout(bounce);
 
       bounce = setTimeout(() => {
         cleanUpFunction();
-        clearTimeout(bounce);
+        bounce && clearTimeout(bounce);
       }, duration * 4);
     }
 
-    return () => clearTimeout(bounce);
+    return () => {bounce && clearTimeout(bounce)};
   }, [rippleCount, duration, cleanUpFunction]);
 };
 
@@ -150,7 +150,7 @@ const Ripple = ({ duration = 850, color = "#fff" }) => {
   return (
     <RippleContainer duration={duration} color={color} onMouseDown={addRipple}>
       {rippleArray.length > 0 &&
-        rippleArray.map((ripple:any, index:any) => {
+        rippleArray.map((ripple:any, index: number) => {
           return (
             <span
               key={"span" + index}
@@ -178,7 +178,7 @@ const SearchBox: React.FC = () => {
 
   const ResetButtonWrapper: React.FC = () => {
     return (
-    <ResetButton id="reset" onClick={() => dispatch(filterSliceActions.setSearchFilter(""))} >
+    <ResetButton id="reset" onClick={() => dispatch(productsActions.setSearchFilter(""))} >
       RESET
       <Ripple color="rgb(255,2555,255,0.5)"/>
     </ResetButton>
@@ -186,7 +186,7 @@ const SearchBox: React.FC = () => {
 
   return (
   <SearchBarWrapper>
-    <Input value={searchTerm} onChange={(e) => dispatch(filterSliceActions.setSearchFilter(e.target.value))} />
+    <Input value={searchTerm} onChange={(e) => dispatch(productsActions.setSearchFilter(e.target.value))} />
     <Label className={searchTerm==="" ? "" : "up"}>search</Label>
     <ResetButtonWrapper />
   </SearchBarWrapper>
@@ -258,14 +258,14 @@ const ToggleButtons: React.FC = () => {
     <ToggleButton className={selected==="in" ? "in active" : "in"}
       onClick={() => 
         selected === "in"
-        ? dispatch(filterSliceActions.setSelectedFilter("none"))
-        : dispatch(filterSliceActions.setSelectedFilter("in"))}
+        ? dispatch(productsActions.setSelectedFilter("none"))
+        : dispatch(productsActions.setSelectedFilter("in"))}
     >IN STOCK<Ripple/></ToggleButton>
     <ToggleButton className={selected==="out" ? "out active" : "out"}
       onClick={() => 
         selected === "out"
-        ? dispatch(filterSliceActions.setSelectedFilter("none"))
-        : dispatch(filterSliceActions.setSelectedFilter("out"))}
+        ? dispatch(productsActions.setSelectedFilter("none"))
+        : dispatch(productsActions.setSelectedFilter("out"))}
     >OUT OF STOCK<Ripple/></ToggleButton>
   </ToggleButtonsWrapper>
 )};

@@ -4,7 +4,8 @@ import Footer from './Footer';
 import { useParams } from "react-router-dom";
 import { ProductType } from '../model/models';
 import styled from 'styled-components';
-import { useProducts } from './Functions';
+import { useSelector } from 'react-redux';
+import { productsSelector } from '../store/selectors';
 
 const ExtGridDiv = styled.div`
     min-height: 100vh;
@@ -82,7 +83,7 @@ export const ProductDetailsCard:
         <div>
             <ProdDetGrid>
                 <VariantTitle title={product ? product.name : ""} />
-                <DetImage alt={ `img${product?.UPC}` } src={`https://picsum.photos/800/400?random=${product?.UPC}`} />
+                <DetImage alt={ `img${product?.UPC}` } src={product?.img} />
                 <ProdDet product={product} />
             </ProdDetGrid>
         </div>
@@ -91,7 +92,7 @@ export const ProductDetailsCard:
 
 const ProductDetails: React.FC = () => {
     const { id } = useParams<{ id : string }>();
-    var product = useProducts().find((prod:ProductType) => prod.UPC===id);
+    var product = useSelector(productsSelector).find((prod:ProductType) => prod.UPC===id);
     const [variant, setVariant] = 
         React.useState<ProductType | Omit<ProductType, "variants">>();
     const [temp, setTemp] = 
@@ -104,7 +105,7 @@ const ProductDetails: React.FC = () => {
 
     const VariantCard:React.FC<{product: ProductType | Omit<ProductType, "variants">}>=({product}) => {
         return (
-            <VariantImage src={ `https://picsum.photos/800/400?random=${product.UPC}` }
+            <VariantImage src={ product.img }
                 onMouseEnter={ () => setVariant(product) }
                 onMouseLeave={ () => setVariant(temp) }
                 onClick={ () => setTemp(product) } />
@@ -116,7 +117,7 @@ const ProductDetails: React.FC = () => {
             <Header />
             {product && variant ?
             <ContainerGrid>    
-                <ProductDetailsCard product={variant} /> 
+                <ProductDetailsCard product={variant} />
                 <Title />
                 <VariantGridDiv>
                     <VariantCard product={product} />

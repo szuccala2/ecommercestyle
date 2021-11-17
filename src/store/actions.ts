@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { stockFilter, stateModel } from '../model/models';
+import { stockFilter, stateModel, ProductType } from '../model/models';
 
 const initialState: stateModel = {
     searchFilter: "",
-    selectedFilter: "none"
+    selectedFilter: "none",
+    products: []
 };
 
-export const filterSlice = createSlice({
+export const productsSlice = createSlice({
   name: 'SET_STATE',
   initialState,
   reducers: {
@@ -15,10 +16,13 @@ export const filterSlice = createSlice({
     },
     setSearchFilter: (state: stateModel, action: PayloadAction<string>) => {
       state.searchFilter = action.payload;
+    },
+    setProducts: (state: stateModel, action: PayloadAction<ProductType[]>) => {
+      state.products = action.payload;
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const filterSliceActions = filterSlice.actions;
-export default filterSlice.reducer;
+export const productsActions = productsSlice.actions;
+export default productsSlice.reducer;
