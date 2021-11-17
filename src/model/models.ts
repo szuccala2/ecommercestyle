@@ -16,6 +16,6 @@ export type ProductType = {
 export type stockFilter = "none" | "in" | "out";
 
 export type stateModel = {
-    stockFilter: stockFilter,
-    searchFilter: string
+    searchFilter: string,
+    selectedFilter: stockFilter
 };

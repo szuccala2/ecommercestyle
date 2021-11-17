@@ -61,18 +61,70 @@ const Image = styled.img`
     border-top-right-radius: 4px;
 `;
 
-const Product: React.FC<{prod: ProductType, det: boolean}> = ({ prod, det }) => {
+export const ProductCard: React.FC<{product: ProductType}> = ({ product }) => {
     var history = useHistory();
     return (
-        <Card onClick={()=>{det ? history.push('/') : history.push(`/prod/${prod.UPC}`)}}>
+        <Card onClick={()=>{history.push(`/prod/${product.UPC}`)}}>
             <Image src="https://via.placeholder.com/350" alt="prodImg" />
             <CardDes>
-                <Text className="name">{prod.name}</Text>
-                <Text className="price">€{prod.price.current.value}</Text>
-                {prod.availability.stock > 0 && <InStockChip />}
+                <Text className="name">{product.name}</Text>
+                <Text className="price">{product.price.current.value}$</Text>
+                {product.availability.stock > 0 && <InStockChip />}
             </CardDes>
         </Card>
     );
 }
 
-export default Product;
+const ProdDetGrid = styled.div`
+    display: grid;
+    grid-template-areas: 
+        'title title title title title'
+        'img   det   det   det   det  ';
+    width: 80%;
+    margin-top: -35px;
+`;
+
+const Title: React.FC<{title: string}> = ({title}) => {
+    return (
+        <h1 style={{gridArea: 'title'}}>{title}</h1>
+    );
+}
+
+const DetImage = styled.img`
+    grid-area: 'img';
+`;
+
+const DetElement = styled.h1`
+    font-size: 18px;
+    color: gray;
+    display: flexbox;
+
+    & > span {
+        font-weight: bold;
+        color: black;
+    }
+`;
+
+const ProdDet: React.FC<{product: ProductType | Omit<ProductType, "variants"> | undefined}> = ({ product }) => {
+    return (
+        <div>
+            <DetElement>Name: <span>{product ? product.name : ""}</span></DetElement>
+            <DetElement>Price: <span>{product ? product.price.current.value : ""}$</span></DetElement>
+            <DetElement>Stock: <span>{product ? product.availability.stock : ""}</span></DetElement>
+            <DetElement>UPC: <span>{product ? product.UPC : ""}</span></DetElement>
+        </div>
+    );
+}
+
+export const ProductDetailsCard:
+    React.FC<{product: ProductType | Omit<ProductType, "variants"> | undefined}> = ({ product }) => {
+    return (
+        <div>
+            <ProdDetGrid>
+                <Title title={product ? product.name : ""} />
+                <DetImage alt={ `img${product?.UPC}` } src={`https://picsum.photos/800/400?random=${product?.UPC}`} />
+                <ProdDet product={product} />
+            </ProdDetGrid>
+        </div>
+    );
+}
