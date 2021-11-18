@@ -28,7 +28,7 @@ const Chip = styled.div`
     background-color: rgb(204, 204, 204, 0.4);
     padding: 8px 12px 8px 12px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 0.813rem;
     width: 45px;
     margin-bottom: 15px;
 `;
@@ -71,7 +71,7 @@ const Text = styled.p`
     }
 
     &.price {
-        font-size: 20px;
+        font-size: 1.25rem;
         color: grey;
     }
 `;

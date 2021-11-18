@@ -9,6 +9,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { productsActions } from './store/actions';
 import { ProductType } from './model/models';
+import Prova from './components/Prova';
 
 const App : React.FC = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const App : React.FC = () => {
   return (
     <Switch>
       <Route path="/prod/:id" component={ProductDetails} />
+      <Route path="/prova" component={Prova} />
       <Route exact path="/" component={PLP} />
     </Switch>
   );

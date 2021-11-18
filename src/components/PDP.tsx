@@ -31,6 +31,7 @@ const VariantGridDiv = styled.div`
     margin-bottom: 15vh;
 
     @media only screen and (max-width: 550px) {
+        display: flex;
         width: 90vw;
         background-color: #333;
         overflow: auto;
@@ -77,7 +78,7 @@ const DetImage = styled.img`
 `;
 
 const DetElement = styled.h1`
-    font-size: 18px;
+    font-size: 1.125rem;
     color: gray;
     display: flexbox;
 
